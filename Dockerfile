@@ -10,7 +10,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o transporter -ldfl
 
 FROM alpine:latest 
 
-RUN apk --no-cache add ca-certificates
+#RUN apk --no-cache add ca-certificates
 
 COPY --from=builder /go/src/github.com/compose/transporter/transporter /usr/local/bin/
 
@@ -20,4 +20,4 @@ COPY --from=builder /go/src/github.com/compose/transporter/transporter /usr/loca
 # To fix this we just create /etc/nsswitch.conf and add the following line:
 RUN echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
 
-CMD ["/usr/local/bin/transporter"]
+ENTRYPOINT ["/usr/local/bin/transporter"]
